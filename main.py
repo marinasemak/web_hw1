@@ -1,46 +1,26 @@
-from commands_handler import (
-    add_contact,
-    change_contact,
-    show_phone,
-    show_all,
-    add_birthday,
-    show_birthday,
-    birthdays,
-)
-from parse_input import parse_input
+from interface import ConsoleInterface
 from functionality import AddressBook
+from commands_handler import CommandHandler, CommandType
 
 
-def main():
-    record = AddressBook()
-    print("Welcome to the assistant bot!")
-    while True:
-        user_input = input("Enter a command: ")
-        command, *args = parse_input(user_input)
+class RunBot:
 
-        match command:
-            case "close" | "exit":
-                print("Good bye!")
+    def __init__(self, ui: ConsoleInterface, record: AddressBook):
+        self.ui = ui
+        self.record = record
+
+    def run(self):
+        while True:
+            user_input = self.ui.get_command()
+            command_handler = CommandHandler(user_input, self.record)
+            self.ui.display_command(command_handler)
+            if (
+                user_input == CommandType.TYPE_EXIT.value
+                or user_input == CommandType.TYPE_CLOSE.value
+            ):
                 break
-            case "hello":
-                print("How can I help you?")
-            case "add":
-                print(add_contact(args, record))
-            case "change":
-                print(change_contact(args, record))
-            case "phone":
-                print(show_phone(args, record))
-            case "all":
-                print(show_all(record))
-            case "add-birthday":
-                print(add_birthday(args, record))
-            case "show-birthday":
-                print(show_birthday(args, record))
-            case "birthdays":
-                print(birthdays(record))
-            case _:
-                print("Invalid command.")
 
 
 if __name__ == "__main__":
-    main()
+    client = RunBot(ConsoleInterface(), AddressBook())
+    client.run()

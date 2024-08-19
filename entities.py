@@ -1,19 +1,9 @@
+from abc import ABC, abstractmethod
 from datetime import datetime
+from errors_handler import FieldValidationError
 
 
-class FieldValidationError(Exception):
-    pass
-
-
-class MissingValueError(Exception):
-    pass
-
-
-class MissingArgumentsError(Exception):
-    pass
-
-
-class Field:
+class Field(ABC):
     """
     Basic class for records fields
     """
@@ -25,6 +15,7 @@ class Field:
     def __str__(self):
         return str(self.value)
 
+    @abstractmethod
     def validate_field(self):
         pass
 

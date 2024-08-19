@@ -1,6 +1,11 @@
+from pathlib import Path
+import pickle
 from collections import UserDict
-from entities import Name, Phone, Birthday, MissingValueError
+from entities import Name, Phone, Birthday
+from errors_handler import MissingValueError
 from datetime import date, datetime, timedelta
+
+DATA_FILE_PATH = Path("addressbook.pickle")
 
 
 class Record:
@@ -112,3 +117,22 @@ class AddressBook(UserDict):
                 )
 
         return upcoming_birthdays
+
+
+def save_data(book, filename=DATA_FILE_PATH):
+    """
+    Save address book to file
+    """
+    with open(DATA_FILE_PATH, "wb") as data_file:
+        pickle.dump(book, data_file)
+
+
+def load_records():
+    """
+    Load saved address book
+    """
+    book = AddressBook()
+    if DATA_FILE_PATH.exists():
+        with open(DATA_FILE_PATH, "rb") as data_file:
+            book = pickle.load(data_file)
+    return book

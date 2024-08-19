@@ -1,5 +1,12 @@
+from errors_handler import (
+    FieldValidationError,
+    MissingValueError,
+    MissingArgumentsError,
+    input_error,
+)
 from abc import ABC, abstractmethod
 from functionality import AddressBook, Record
+
 
 class Command(ABC):
     @abstractmethod
@@ -9,12 +16,13 @@ class Command(ABC):
 
 class AddContact(Command):
 
+    @input_error
     def execute(self, args, book: AddressBook) -> None:
         """
         Add new or update contact in the dictionary
         """
-        # if len(args) < 2:
-        #     raise MissingArgumentsError("Give me name and phone please")
+        if len(args) < 2:
+            raise MissingArgumentsError("Give me name and phone please")
         name, phone, *_ = args
         record = book.find(name)
         message = "Contact updated."
@@ -26,13 +34,16 @@ class AddContact(Command):
             record.add_phone(phone)
         print(message)
 
+
 class ChangeContact(Command):
+
+    @input_error
     def execute(self, args, book: AddressBook) -> None:
         """
         Change phone for existed contact
         """
-        # if len(args) < 3:
-        #     raise MissingArgumentsError("Give me name, old phone and new phone please")
+        if len(args) < 3:
+            raise MissingArgumentsError("Give me name, old phone and new phone please")
         name, old_phone, new_phone, *_ = args
         record = book.find(name)
         if record:
@@ -41,13 +52,16 @@ class ChangeContact(Command):
         else:
             print("Contact not found")
 
+
 class ShowPhone(Command):
+
+    @input_error
     def execute(self, args, book: AddressBook) -> None:
         """
         Show phone for existed contact
         """
-        # if len(args) < 1:
-        #     raise MissingArgumentsError("Give me name of the contact please")
+        if len(args) < 1:
+            raise MissingArgumentsError("Give me name of the contact please")
         name, *_ = args
         record = book.find(name)
         if record:
@@ -56,7 +70,10 @@ class ShowPhone(Command):
             message = "Contact not found"
         print(message)
 
+
 class ShowAllContacts(Command):
+
+    @input_error
     def execute(self, book: AddressBook) -> None:
         """
         Show all contacts from the dictionary
@@ -69,10 +86,12 @@ class ShowAllContacts(Command):
 
 
 class AddBirthday(Command):
+
+    @input_error
     def execute(self, args, book: AddressBook) -> None:
 
-        # if len(args) < 2:
-        #     raise MissingArgumentsError("Give me name and birthday please")
+        if len(args) < 2:
+            raise MissingArgumentsError("Give me name and birthday please")
         name, birthday, *_ = args
         record = book.find(name)
         if not record:
@@ -83,10 +102,12 @@ class AddBirthday(Command):
 
 
 class ShowBirthday(Command):
+
+    @input_error
     def execute(self, args, book: AddressBook) -> None:
 
-        # if len(args) < 1:
-        #     raise MissingArgumentsError("Give me name of the contact please")
+        if len(args) < 1:
+            raise MissingArgumentsError("Give me name of the contact please")
         name, *_ = args
         record = book.find(name)
         if not record:
@@ -99,6 +120,8 @@ class ShowBirthday(Command):
 
 
 class Birthdays:
+
+    @input_error
     def execute(self, book: AddressBook) -> None:
         """
         Show upcoming birthdays within 7 days ahead

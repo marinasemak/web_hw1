@@ -1,5 +1,16 @@
 from functools import wraps
-from entities import FieldValidationError, MissingValueError, MissingArgumentsError
+
+
+class FieldValidationError(Exception):
+    pass
+
+
+class MissingValueError(Exception):
+    pass
+
+
+class MissingArgumentsError(Exception):
+    pass
 
 
 def input_error(func):
@@ -8,12 +19,16 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError as e:
+            print(e)
             return e
         except FieldValidationError as e:
+            print(e)
             return e
         except MissingValueError as e:
+            print(e)
             return e
         except MissingArgumentsError as e:
+            print(e)
             return e
 
     return inner
