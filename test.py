@@ -51,7 +51,6 @@ class CommandHandler:
         match cmd:
             case CommandType.TYPE_EXIT.value | CommandType.TYPE_CLOSE.value:
                 print("Good bye!")
-                # break
             case "hello":
                 print("How can I help you?")
             case CommandType.TYPE_ADD.value:
@@ -96,11 +95,13 @@ class RunBot:
         self.record = record
 
     def run(self):
-        # while True:
-        user_input = self.ui.get_command()
-        command_handler = CommandHandler(user_input, self.record)
-        self.ui.display_command(command_handler)
-
+        while True:
+            user_input = self.ui.get_command()
+            command_handler = CommandHandler(user_input, self.record)
+            self.ui.display_command(command_handler)
+            # if CommandHandler.parse_input == 'exit'
+            if user_input == CommandType.TYPE_EXIT.value or CommandType.TYPE_CLOSE.value:
+             break
 
 if __name__ == "__main__":
     client = RunBot(ConsoleInterface(), AddressBook())
