@@ -51,13 +51,13 @@ class ShowPhone(Command):
         name, *_ = args
         record = book.find(name)
         if record:
-            message = f"{record.name}: {"; ".join(p.value for p in record.phones)}"
+            message = f"{record.name}: {'; '.join(p.value for p in record.phones)}"
         else:
             message = "Contact not found"
         print(message)
 
 class ShowAllContacts(Command):
-    def execute(book: AddressBook) -> None:
+    def execute(self, book: AddressBook) -> None:
         """
         Show all contacts from the dictionary
         """

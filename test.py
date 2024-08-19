@@ -48,9 +48,36 @@ class CommandHandler:
 
     def handle_command(self):
         cmd, *args = self.parse_input()
-        if cmd == CommandType.TYPE_ADD.value:
-            command = AddContact()
-            command.execute(args, self.record)
+        match cmd:
+            case CommandType.TYPE_EXIT.value | CommandType.TYPE_CLOSE.value:
+                print("Good bye!")
+                # break
+            case "hello":
+                print("How can I help you?")
+            case CommandType.TYPE_ADD.value:
+                command = AddContact()
+                command.execute(args, self.record)
+            case CommandType.TYPE_CHANGE.value:
+                command = ChangeContact()
+                command.execute(args, self.record)
+            case CommandType.TYPE_PHONE.value:
+                command = ShowPhone()
+                command.execute(args, self.record)
+            case CommandType.TYPE_ALL.value:
+                command = ShowAllContacts()
+                command.execute(self.record)
+            case CommandType.TYPE_ADD_BIRTHDAY.value:
+                command = AddBirthday()
+                command.execute(args, self.record)
+            case CommandType.TYPE_SHOW_BIRTHDAY.value:
+                command = ShowBirthday()
+                command.execute(args, self.record)
+            case CommandType.TYPE_BIRTHDAYS.value:
+                command = Birthdays()
+                command.execute(self.record)
+            case _:
+                print("Invalid command.")
+            
 
 
 class ConsoleInterface(Interface):
